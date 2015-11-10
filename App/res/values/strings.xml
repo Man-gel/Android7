@@ -3,5 +3,6 @@
 
     <string name="app_name">Directorio</string>
     <string name="action_settings">Opciones</string>
+    <string name="title_activity_agregar">Nuevo</string>
 
 </resources>
