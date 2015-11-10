@@ -1,11 +1,14 @@
 package com.example.directorio;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends Activity {
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,5 +33,23 @@ public class MainActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onRestart()
+	{
+		super.onRestart();
+		consultarBD();
+	}
+	
+	public void agregarClick(View v)
+	{
+		Intent intent = new Intent(MainActivity.this, Agregar.class);
+		startActivity(intent);
+	}
+	
+	private void consultarBD()
+	{
+		
 	}
 }

@@ -16,7 +16,7 @@
         android:layout_alignRight="@+id/linearLayout1" >
 
         <ImageButton
-            android:id="@+id/imageButton1"
+            android:id="@+id/btn_main_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -24,7 +24,8 @@
             android:contentDescription="@string/btn_add"
             android:maxHeight="43dp"
             android:maxWidth="43dp"
-            android:src="@drawable/newCont" />
+            android:src="@drawable/new_cont"
+            android:onClick="agregarClick" />
 
     </RelativeLayout>
 
@@ -38,7 +39,7 @@
         android:orientation="vertical" >
 
         <ListView
-            android:id="@+id/listView1"
+            android:id="@+id/lv_directorio"
             android:layout_width="match_parent"
             android:layout_height="355dp" >
         </ListView>

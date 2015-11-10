@@ -6,7 +6,7 @@
     <string name="title_activity_agregar">Nuevo</string>
     <string name="btn_add">Agregar</string>
     <string name="nuevo_nmb">Nombre</string>
-    <string name="nuevo_tel">Número telefónico</string>
+    <string name="nuevo_tel">Telefono</string>
     <string name="nuevo">nuevo</string>
 
 </resources>
