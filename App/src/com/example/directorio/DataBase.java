@@ -1,5 +1,9 @@
 package com.example.directorio;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,31 +29,62 @@ public class DataBase extends SQLiteOpenHelper
 		
 	}
 	
-	public void agregar(Context context, String id)
+	public void agregarContacto(Context context, HashMap<String,String> registro)
 	{
 		SQLiteDatabase bd = this.getWritableDatabase();
-		Cursor fila = bd.rawQuery("SELECT nombre,descripcion,imagen,video FROM jugadores WHERE id="+id, null);
-		if(fila.moveToFirst()){
-			jugador.id= Integer.parseInt(id);
-			jugador.nombre=fila.getString(0);
-			jugador.descripcion=fila.getString(1);
-			jugador.imagen=fila.getString(2);
-			jugador.video=fila.getString(3);
-		}
+		ContentValues vals = new ContentValues();
+		vals.put("nombre", registro.get("name"));
+		vals.put("numero", registro.get("phone"));
+		bd.insert("contactos", null, vals);
 		bd.close();
 	}
 	
-	public void buscar(Context context, String busqueda){
+	public HashMap<String,String> buscarContacto(Context context, String busqueda)
+	{
+		HashMap<String,String> res = new HashMap<String,String>();
 		SQLiteDatabase bd = this.getWritableDatabase();
-		Cursor fila = bd.rawQuery("SELECT nombre,descripcion,imagen,video,id FROM jugadores WHERE nombre LIKE '%"+busqueda+"%'", null);
-		if(fila.moveToFirst()){
-			jugador.id= Integer.parseInt(fila.getString(4));
-			jugador.nombre=fila.getString(0);
-			jugador.descripcion=fila.getString(1);
-			jugador.imagen=fila.getString(2);
-			jugador.video=fila.getString(3);
+		Cursor fila = bd.rawQuery("SELECT * FROM contactos WHERE nombre LIKE '%"+busqueda+"%'", null);
+		if(fila.moveToFirst())
+		{
+			do
+			{
+				res.put("name", fila.getString(1));
+				res.put("phone", fila.getString(2));
+			}
+			while(fila.moveToNext());
+		}
+		else
+		{
+			bd.close();
+			return null;		
 		}
 		bd.close();
+		return res;
+	}
+	
+	public ArrayList<HashMap<String,String>> consultarTodo()
+	{
+		ArrayList<HashMap<String,String>> todos = new ArrayList<HashMap<String,String>>();
+		SQLiteDatabase bd = this.getWritableDatabase();
+		Cursor cursor = bd.rawQuery("SELECT * FROM contactos", null);
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				HashMap<String,String>registro = new HashMap<String,String>();
+				registro.put("name", cursor.getString(1));
+				registro.put("phone", cursor.getString(2));
+				todos.add(registro);
+			}
+			while(cursor.moveToNext());
+		}
+		else
+		{
+			bd.close();
+			return null;
+		}
+		bd.close();
+		return todos;
 	}
 
 
