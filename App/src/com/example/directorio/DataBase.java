@@ -1,8 +1,6 @@
 package com.example.directorio;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -29,27 +27,27 @@ public class DataBase extends SQLiteOpenHelper
 		
 	}
 	
-	public void agregarContacto(Context context, HashMap<String,String> registro)
+	public void agregarContacto(Context context, Person p)
 	{
 		SQLiteDatabase bd = this.getWritableDatabase();
 		ContentValues vals = new ContentValues();
-		vals.put("nombre", registro.get("name"));
-		vals.put("numero", registro.get("phone"));
+		vals.put("nombre", p.name);
+		vals.put("telefono", p.phone);
 		bd.insert("contactos", null, vals);
 		bd.close();
 	}
 	
-	public HashMap<String,String> buscarContacto(Context context, String busqueda)
+	public Person buscarContacto(Context context, String busqueda)
 	{
-		HashMap<String,String> res = new HashMap<String,String>();
+		Person res = new Person();
 		SQLiteDatabase bd = this.getWritableDatabase();
 		Cursor fila = bd.rawQuery("SELECT * FROM contactos WHERE nombre LIKE '%"+busqueda+"%'", null);
 		if(fila.moveToFirst())
 		{
 			do
 			{
-				res.put("name", fila.getString(1));
-				res.put("phone", fila.getString(2));
+				res.name = fila.getString(1);
+				res.phone = fila.getString(2);
 			}
 			while(fila.moveToNext());
 		}
@@ -62,18 +60,16 @@ public class DataBase extends SQLiteOpenHelper
 		return res;
 	}
 	
-	public ArrayList<HashMap<String,String>> consultarTodo()
+	public ArrayList<Person> consultarTodo()
 	{
-		ArrayList<HashMap<String,String>> todos = new ArrayList<HashMap<String,String>>();
+		ArrayList<Person> todos = new ArrayList<Person>();
 		SQLiteDatabase bd = this.getWritableDatabase();
 		Cursor cursor = bd.rawQuery("SELECT * FROM contactos", null);
 		if(cursor.moveToFirst())
 		{
 			do
 			{
-				HashMap<String,String>registro = new HashMap<String,String>();
-				registro.put("name", cursor.getString(1));
-				registro.put("phone", cursor.getString(2));
+				Person registro = new Person(cursor.getString(1), cursor.getString(2));
 				todos.add(registro);
 			}
 			while(cursor.moveToNext());
