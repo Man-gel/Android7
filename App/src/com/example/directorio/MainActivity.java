@@ -1,21 +1,30 @@
 package com.example.directorio;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
 public class MainActivity extends Activity {
 	public static DataBase db;
+	private ListView lista;
+	public static ArrayList<Person>  contactos;
+	public static MiAdapter adapter;
 	
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		contactos = new ArrayList<Person>();
 		db = new DataBase(this,"directorio",null,1);
+		adapter = new MiAdapter(MainActivity.this,contactos);
+		lista = (ListView)findViewById(R.id.lv_directorio);		
+		consultarBD();
 	}
 
 	@Override
@@ -51,7 +60,15 @@ public class MainActivity extends Activity {
 	}
 	
 	private void consultarBD()
-	{
-		db.consultarTodo();		
+	{		
+		contactos = db.consultarTodo();
+		if(contactos != null)
+		{
+			adapter.clear();
+			adapter.addAll(contactos);
+			adapter.notifyDataSetChanged();
+			lista.setAdapter(adapter);			
+		}
+		db.close();
 	}
 }

@@ -27,14 +27,19 @@ public class DataBase extends SQLiteOpenHelper
 		
 	}
 	
-	public void agregarContacto(Context context, Person p)
+	public boolean agregarContacto(Context context, Person p)
 	{
 		SQLiteDatabase bd = this.getWritableDatabase();
 		ContentValues vals = new ContentValues();
 		vals.put("nombre", p.name);
 		vals.put("telefono", p.phone);
-		bd.insert("contactos", null, vals);
+		if(bd.insert("contactos", null, vals) == -1)
+		{
+			bd.close();
+			return false;
+		}
 		bd.close();
+		return true;
 	}
 	
 	public Person buscarContacto(Context context, String busqueda)

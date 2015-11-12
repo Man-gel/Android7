@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class MiAdapter extends ArrayAdapter<Person>
 {
-
+	
 	public MiAdapter(Context context,  ArrayList<Person> objects) {
 		super(context, 0,  objects);
 		
