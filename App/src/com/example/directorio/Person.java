@@ -22,4 +22,12 @@ public class Person
 		this.name = p.name;
 		this.phone = p.phone;
 	}
+	
+	
+	public boolean equals(Person p)
+	{
+		if(p.name.equals(this.name))
+			return true;
+		return false;		
+	}
 }

@@ -50,16 +50,26 @@ public class Agregar extends Activity {
 			mostrarToast("Faltan campos por completar");
 			return;
 		}
-		if(telefono_nuevo.contains("."))
+		if(telefono_nuevo.matches(".*[!-/]+?([\\s]*|[0-9]+)"))
 		{
-			mostrarToast("No puede ingresar un número de telefono con signos");
+			mostrarToast("No puede ingresar un número de telefono con signos o símbolos");
+			etNU_telefono.setText("");
 			return;
 		}
 		Person nuevo = new Person(nombre_nuevo,telefono_nuevo);
+		Person enBD = MainActivity.db.buscarContacto(this, nombre_nuevo);
+		if(enBD != null && nuevo.equals(enBD))
+		{
+			mostrarToast("No se pudo ingresar el nuevo contacto porque ya existe");
+			etNU_telefono.setText("");
+			etNU_nombre.requestFocus();
+			return;
+		}
 		if( !MainActivity.db.agregarContacto(this, nuevo) )
 			mostrarToast("No se pudo agregar el nuevo contacto");
 		this.finish();
 	}
+	
 	private void mostrarToast(CharSequence mensaje)
 	{
 		Context contexto = getApplicationContext();
@@ -68,6 +78,12 @@ public class Agregar extends Activity {
 		toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
 		toast.show();	
 	}
-
+	
+	public void cancelarClick(View v)
+	{
+		etNU_telefono.setText("");
+		etNU_nombre.setText("");
+		this.finish();
+	}
 
 }
